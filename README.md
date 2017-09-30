@@ -9,4 +9,4 @@ Right now, Steve has as output, two screens, a camera, a treaded chassis that ru
 
 I hope some day to incorporate Image Recognition and Voice Commands. However, OpenCV is fighting me, and the sound hardware on raspberry pi is difficult to use.
 
-A more in-depth writeup will is in progress. 
+A more in-depth writeup is in progress. 
