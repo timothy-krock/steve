@@ -1,7 +1,7 @@
 # About Steve
 Honestly, I just wanted to build a robot.  
 
-When I started the project, my only goal was to build something that moved. As time went on, I wanted to add to that. I started adding sensors, software, eventually a camera.
+When I started the project, my only goal was to build something that moved. As time went on, I decided I wanted to add to that. I started adding sensors, software, eventually a camera.
 
 Somewhere along the line, a friend of mine said it was only cool if it could fetch me a beer. That got me thinking, and it has since sculpted a direction for Steve going forward. 
 
