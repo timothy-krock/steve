@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+################################
+## CLIENT CODE FOR COMMUNICATING
+## WITH STEVE'S EVENT LOOP
+################################
+
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 
