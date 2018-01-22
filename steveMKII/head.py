@@ -56,7 +56,6 @@ def getPort():
 
 
 
-
 ###########################################
 ## HELPER FUNCTION STARTS SERVER
 def startServer():
@@ -68,10 +67,15 @@ def startServer():
     SERVER_STARTED = 1
     return serversocket
 
+
+
 def fireSensors(ip):
     threads = {}
     threads['lights'] = thread.start_new_thread(sensors.run,(ip,port,sensors.lights,.5))
     threads['sound'] = thread.start_new_thread(sensors.run,(ip,port,sensors.sound,.01))
+    threads['temp'] = thread.start_new_thread(sensors.run,(ip,port,sensors.temp,.5))
+    threads['ip'] = thread.start_new_thread(sensors.run,(ip,port,sensors.ip,.01))
+
     return threads
 if __name__ == "__main__":
     serversocket = startServer()
@@ -83,6 +87,7 @@ if __name__ == "__main__":
         connections.append(connection)
     while True:
         time.sleep(.2)
+        print "DATA: ", data
         for connection in connections:
 
             try:
@@ -99,5 +104,3 @@ if __name__ == "__main__":
                     connection.send("reply")
 
                     data[packet["data"]["type"]] = packet["data"]
-
-
