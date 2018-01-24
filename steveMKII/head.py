@@ -56,6 +56,7 @@ def getPort():
 
 
 
+
 ###########################################
 ## HELPER FUNCTION STARTS SERVER
 def startServer():
@@ -67,15 +68,24 @@ def startServer():
     SERVER_STARTED = 1
     return serversocket
 
-
-
 def fireSensors(ip):
     threads = {}
-    threads['lights'] = thread.start_new_thread(sensors.run,(ip,port,sensors.lights,.5))
-    threads['sound'] = thread.start_new_thread(sensors.run,(ip,port,sensors.sound,.01))
-    threads['temp'] = thread.start_new_thread(sensors.run,(ip,port,sensors.temp,.5))
-    threads['ip'] = thread.start_new_thread(sensors.run,(ip,port,sensors.ip,.01))
-
+    ##################################################
+    ## THREADS DESIGNED FOR INPUT INFORMATION
+    ## SEE sensors.py FOR INFORMATION ON
+    ## initIO AND THREAD ARGS
+    threads['lights'] = thread.start_new_thread(initIO,(lights,0))
+    threads['sound'] = thread.start_new_thread(initIO,(sound,0))
+    threads['temp'] = thread.start_new_thread(initIO,(temp,0))
+    threads['ip'] = thread.start_new_thread(initIO,(ip,0))
+    ##################################################
+    ## THREADS DESIGNED FOR OUTPUT INFORMATION
+    #threads['servos'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
+    #threads['treads'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
+    #threads['laser'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
+    #threads['light'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
+    #threads['miniLCD'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
+    #threads['bigLCD'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
     return threads
 if __name__ == "__main__":
     serversocket = startServer()
@@ -100,7 +110,9 @@ if __name__ == "__main__":
                     connection.send(json.dumps(data))
                     print "REQUEST RECIEVED: ", data
                 else:
-                    print buf
+                    print buf 
                     connection.send("reply")
 
                     data[packet["data"]["type"]] = packet["data"]
+
+
