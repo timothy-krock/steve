@@ -12,22 +12,22 @@ import subprocess
 import thread
 ##########################
 ## MY CODE
-import sensors
-
-import listener
+from sensors import *
 SERVER_STARTED = 0
 reply = "hello!"
 ip = "localhost"
 data = {}
-port = 1141
+port = 1138
+ip2 = 'localhost'
+port2 = 1139
 #########################################
 ## SIGNAL HANDLER CODE
 def signalHandler(signal, frame):
         print('You pressed Ctrl+C!')
-        if SERVER_STARTED:
-            serversocket.close()
+        #if SERVER_STARTED:
+        #    serversocket.close()
         sys.exit(0)
-signal.signal(signal.SIGINT, signalHandler)
+#signal.signal(signal.SIGINT, signalHandler)
 
 
 #########################################
@@ -39,7 +39,7 @@ def connectToHead(ip, port):
 def sendUp(word,connection):
     connection.send(word)
     buf = connection.recv(1024)
-    return buf
+    return buf 
     
 def sensorShutdown(conn):
     conn.close()
@@ -54,8 +54,11 @@ def getIp():
 def getPort():
     return port
 
+def getIp2():
+    return ip2
 
-
+def getPort2():
+    return port2
 
 ###########################################
 ## HELPER FUNCTION STARTS SERVER
@@ -74,12 +77,13 @@ def fireSensors(ip):
     ## THREADS DESIGNED FOR INPUT INFORMATION
     ## SEE sensors.py FOR INFORMATION ON
     ## initIO AND THREAD ARGS
-    threads['lights'] = thread.start_new_thread(initIO,(lights,0))
-    threads['sound'] = thread.start_new_thread(initIO,(sound,0))
-    threads['temp'] = thread.start_new_thread(initIO,(temp,0))
-    threads['ip'] = thread.start_new_thread(initIO,(ip,0))
+    threads['lights'] = thread.start_new_thread(initIO,(lightsObj,0))
+    threads['sound'] = thread.start_new_thread(initIO,(soundObj,0))
+    threads['temp'] = thread.start_new_thread(initIO,(tempObj,0))
+    threads['ip'] = thread.start_new_thread(initIO,(ipObj,1)) 
+    threads['server'] = thread.start_new_thread(initIO,(serverObj,1))
     ##################################################
-    ## THREADS DESIGNED FOR OUTPUT INFORMATION
+    ## THREADS DESIGNED FOR OUTPUT INFORMATION 
     #threads['servos'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
     #threads['treads'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
     #threads['laser'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
@@ -88,31 +92,31 @@ def fireSensors(ip):
     #threads['bigLCD'] = thread.start_new_thread(sensors.run,(sensors.lights,.5))
     return threads
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signalHandler)
     serversocket = startServer()
     threads = fireSensors(ip)
-    connections = []
+    connections = [] 
     for thread in threads:
         connection, address = serversocket.accept()
         connection.setblocking(0)
         connections.append(connection)
     while True:
         time.sleep(.2)
-        print "DATA: ", data
+        #print "DATA: ", data
         for connection in connections:
-
+       
             try:
                 buf = connection.recv(1024)
             except:
                 buf = ''
             if len(buf) > 0:
                 packet = json.loads(buf)
-                if packet["request"]:
+                if packet["request"]:        
                     connection.send(json.dumps(data))
-                    print "REQUEST RECIEVED: ", data
+                    #print "REQUEST RECIEVED: ", data
                 else:
-                    print buf 
-                    connection.send("reply")
-
+                    #print buf  
+                    connection.send(json.dumps(data))
+        
                     data[packet["data"]["type"]] = packet["data"]
-
-
+        
