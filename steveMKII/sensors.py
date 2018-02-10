@@ -1,9 +1,11 @@
 ####################################################
+## IO COMMUNICATION PROTOTYPE
 import random
 import json
 import time
 import socket
 import head
+
 ##################################################
 ## PROTOTYPE FOR A DATAPACKET
 prototype = {"request": 0, "data": {
