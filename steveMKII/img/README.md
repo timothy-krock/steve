@@ -2,3 +2,6 @@ PIL file is going to use the python imaging library to solve the problems that B
 
 
 https://docs.python.org/2/howto/sockets.html
+
+Need to bastardize this in the near future. 
+https://github.com/Bronkoknorb/PyImageStream
